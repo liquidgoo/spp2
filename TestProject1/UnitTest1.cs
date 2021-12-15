@@ -1,8 +1,10 @@
 using FakerProject;
+using IGeneratorNamespace;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace TestProject1
 {
@@ -73,7 +75,13 @@ namespace TestProject1
     [TestClass]
     public class UnitTest1
     {
-
+        private void loadAndAddGenerators(IFaker faker)
+        {
+            Assembly classGeneratorDll = Assembly.LoadFrom("D:\\smth\\походу уник\\spp\\spp2\\ClassGenerator\\bin\\Debug\\net5.0\\ClassGenerator.dll");
+            Assembly structGeneratorDll = Assembly.LoadFrom("D:\\smth\\походу уник\\spp\\spp2\\StructGenerator\\bin\\Debug\\net5.0\\StructGenerator.dll");
+            faker.AddGenerator((IGenerator)classGeneratorDll.CreateInstance(classGeneratorDll.GetTypes()[0].FullName));
+            faker.AddGenerator((IGenerator)structGeneratorDll.CreateInstance(structGeneratorDll.GetTypes()[0].FullName));
+        }
         private static void printPrintList<T>(IList<T> list) where T : IList
         {
             foreach (T var in list)
@@ -99,9 +107,11 @@ namespace TestProject1
         public void TestCycle()
         {
             Faker faker = new Faker();
+            loadAndAddGenerators(faker);
+
 
             AA a = faker.Create<AA>();
-            Assert.IsTrue(a.MyIntProperty >= int.MinValue && a.MyIntProperty <= int.MaxValue, "Int init");
+            Assert.AreNotEqual(0, a.MyIntProperty, "Int init");
             Assert.IsNull(a.bb.cc.aa, "Cycle end");
 
             Console.WriteLine(a.bb);
@@ -113,13 +123,15 @@ namespace TestProject1
         public void TestEnclosedStructs()
         {
             Faker faker = new Faker();
+            loadAndAddGenerators(faker);
 
             E e = faker.Create<E>();
             Assert.IsNotNull(e.d.b.str, "String init");
-            Assert.IsTrue(e.d.b.a >= 0 && e.d.b.a <= int.MaxValue, "Int init");
-            Assert.IsTrue(e.d.b.d >= 0.0 && e.d.b.d <= double.MaxValue, "Double init");
-            Assert.IsTrue(e.d.c.d >= 0.0 && e.d.c.d <= short.MaxValue, "Short init");
-            Assert.IsTrue(e.d.c.b >= 0.0 && e.d.c.b <= ushort.MaxValue, "UShort init");
+
+            Assert.AreNotEqual(0, e.d.b.a, "Int init");
+            Assert.AreNotEqual(0, e.d.b.d , "Double init");
+            Assert.AreNotEqual(0, e.d.c.d, "Short init");
+            Assert.AreNotEqual(0, e.d.c.b, "UShort init");
 
             Console.WriteLine(e.d.b.str);
             Console.WriteLine(e.d.b.a);
@@ -133,13 +145,14 @@ namespace TestProject1
         public void TestStructs()
         {
             Faker faker = new Faker();
+            loadAndAddGenerators(faker);
 
             A obj1 = faker.Create<A>();
 
             Assert.AreEqual("QWERTY", obj1.s, "S field of A is supposed to be QWERTY!");
             Assert.IsNotNull(obj1.anotherString, "AnotherString field of A should have been initialized!");
-            Assert.IsTrue(obj1.f >= 0.0 && obj1.f <= double.MaxValue, "Double should have been initialized!");
-            Assert.IsTrue(obj1.d >= 0.0 && obj1.d <= int.MaxValue, "Int should have been initialized");
+            Assert.AreNotEqual(0, obj1.f, "Double should have been initialized!");
+            Assert.AreNotEqual(0, obj1.d, "Int should have been initialized");
 
             Console.WriteLine("S = " + obj1.s);
             Console.WriteLine("AnotherString = " + obj1.anotherString);
@@ -205,8 +218,8 @@ namespace TestProject1
             float fl = faker.Create<float>();
             double d = faker.Create<double>();
 
-            Assert.IsTrue(fl >= 0 && fl < float.MaxValue, "Float went wrong!");
-            Assert.IsTrue(d >= 0 && d < double.MaxValue, "Double went wrong!");
+            Assert.AreNotEqual(0, fl, "Float went wrong!");
+            Assert.AreNotEqual(0, d, "Double went wrong!");
 
             Console.WriteLine("Float = " + fl);
             Console.WriteLine("Double = " + d);
@@ -221,20 +234,31 @@ namespace TestProject1
             byte b = faker.Create<byte>();
             sbyte sb = faker.Create<sbyte>();
             ushort us = faker.Create<ushort>();
-            int i = faker.Create<int>();
+            uint ui = faker.Create<uint>();
+            ulong ul = faker.Create<ulong>();
             short sh = faker.Create<short>();
+            int i = faker.Create<int>();
+            long l = faker.Create<long>();
 
-            Assert.IsTrue(b >= 0 && b < byte.MaxValue, "Byte went wrong!");
-            Assert.IsTrue(sb >= 0 && sb < sbyte.MaxValue, "Short Byte went wrong!");
-            Assert.IsTrue(us >= 0 && us < ushort.MaxValue, "Unsigned short went wrong!");
-            Assert.IsTrue(i >= 0 && i < int.MaxValue, "Int went wrong!");
-            Assert.IsTrue(sh >= 0 && sh < short.MaxValue, "Short went wrong!");
+
+
+            Assert.AreNotEqual(b, "Byte went wrong!");
+            Assert.AreNotEqual(sb, "Short Byte went wrong!");
+            Assert.AreNotEqual(us, "Unsigned short went wrong!");
+            Assert.AreNotEqual(ui, "Unsigned int went wrong!");
+            Assert.AreNotEqual(ul, "Unsigned long went wrong!");
+            Assert.AreNotEqual(sh, "Short went wrong!");
+            Assert.AreNotEqual(i, "Int went wrong!");
+            Assert.AreNotEqual(l, "Long went wrong!");
 
             Console.WriteLine("Byte = " + b);
             Console.WriteLine("Short Byte = " + sb);
             Console.WriteLine("Unsigned short = " + us);
-            Console.WriteLine("Int = " + i);
+            Console.WriteLine("Unsigned int = " + ui);
+            Console.WriteLine("Unsigned long = " + ul);
             Console.WriteLine("Short = " + sh);
+            Console.WriteLine("Int = " + i);
+            Console.WriteLine("Long = " + l);
             Console.WriteLine("==========================================");
         }
     }
