@@ -1,23 +1,34 @@
 ﻿using System;
-
+using IGeneratorNamespace;
+using System.Collections.Generic;
 
 namespace FakerProject
 {
     
     public class Faker : IFaker
     {
-        private static readonly int SUPPORTED_TOTAL = 7;
+
+        private List<IGenerator> generators;
+        private Random rand;
         public Faker()
         {
             rand = new Random();
-            generators = new IGenerator[SUPPORTED_TOTAL];
-            generators[0] = new IntGenerator();
-            generators[1] = new StringGenerator();
-            generators[2] = new RealGenerator();
-            generators[3] = new DateGenerator();
-            generators[4] = new ListGenerator();
-            generators[5] = new StructGenerator();
-            generators[6] = new ClassGenerator();
+            generators = new List<IGenerator>();
+            generators.Add(new IntGenerator());
+            generators.Add(new StringGenerator());
+            generators.Add(new RealGenerator());
+            generators.Add(new DateGenerator());
+            generators.Add(new ListGenerator());
+        }
+
+        public bool AddGenerator(IGenerator generator)
+        {
+            foreach(IGenerator gen in generators)
+            {
+                if (gen.GetType().Equals(generator.GetType())) return false;
+            }
+            generators.Add(generator);
+            return true;
         }
 
         public T Create<T>()
@@ -28,20 +39,16 @@ namespace FakerProject
         
         private object Create(Type t)
         {
-            for (int i = 0; i < SUPPORTED_TOTAL; ++i)
-            {
-                if (generators[i].CanGenerate(t))
+            foreach(IGenerator generator in generators) { 
+                if (generator.CanGenerate(t))
                 {
-                    return generators[i].Generate(new GeneratorContext(rand, t, this));
+                    return generator.Generate(new GeneratorContext(rand, t, this));
                 }
             }
+            
             object generatedObject = null;
 
             return generatedObject;
         }
-
-
-        private IGenerator[] generators;
-        private Random rand;
     }
 }
