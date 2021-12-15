@@ -1,0 +1,12 @@
+D:\smth\походу уник\spp\spp2\IGenerator\bin\Release\net5.0\IGenerator.deps.json
+D:\smth\походу уник\spp\spp2\IGenerator\bin\Release\net5.0\IGenerator.dll
+D:\smth\походу уник\spp\spp2\IGenerator\bin\Release\net5.0\ref\IGenerator.dll
+D:\smth\походу уник\spp\spp2\IGenerator\bin\Release\net5.0\IGenerator.pdb
+D:\smth\походу уник\spp\spp2\IGenerator\obj\Release\net5.0\IGenerator.csprojAssemblyReference.cache
+D:\smth\походу уник\spp\spp2\IGenerator\obj\Release\net5.0\IGenerator.GeneratedMSBuildEditorConfig.editorconfig
+D:\smth\походу уник\spp\spp2\IGenerator\obj\Release\net5.0\IGenerator.AssemblyInfoInputs.cache
+D:\smth\походу уник\spp\spp2\IGenerator\obj\Release\net5.0\IGenerator.AssemblyInfo.cs
+D:\smth\походу уник\spp\spp2\IGenerator\obj\Release\net5.0\IGenerator.csproj.CoreCompileInputs.cache
+D:\smth\походу уник\spp\spp2\IGenerator\obj\Release\net5.0\IGenerator.dll
+D:\smth\походу уник\spp\spp2\IGenerator\obj\Release\net5.0\ref\IGenerator.dll
+D:\smth\походу уник\spp\spp2\IGenerator\obj\Release\net5.0\IGenerator.pdb
