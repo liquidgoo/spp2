@@ -6,6 +6,7 @@ namespace ClassGeneratorNamespace
 {
     public class ClassGenerator : IGenerator
     {
+        const int maxNesting = 4;
         private List<string> previous = new List<string>();
         public override object Generate(GeneratorContext context)
         {
@@ -38,7 +39,17 @@ namespace ClassGeneratorNamespace
 
         private bool DoesCauseCycle(string name)
         {
-            return previous.Contains(name);
+            int count = 0;
+            foreach (string prevType in previous)
+            {
+                if (prevType.Equals(name))
+                {
+                    count++;
+                    if (count >= maxNesting) return true;
+                }
+            }
+            //return previous.Contains(name);
+            return false;
         }
 
         private object InitializeObject(GeneratorContext context, Type targetType)
